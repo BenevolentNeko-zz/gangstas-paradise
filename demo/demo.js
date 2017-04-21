@@ -8,6 +8,8 @@ import {
   Synth,
   Monosynth,
   Chorus,
+  Gain,
+  Reverb,
 } from '../src';
 
 import Polysynth from './polysynth';
@@ -58,22 +60,30 @@ export default class Demo extends Component {
               resolution={16}
               bars={1}
             >
-              <Sampler
-                sample="samples/kick.wav"
-                steps={[0, 8, 10]}
-              />
-              <Sampler
-                sample="samples/snare.wav"
-                steps={[4, 12]}
-              />
+              <Reverb>
+                <Gain amount={1.8}>
+                  <Sampler
+                    sample="samples/kick.wav"
+                    steps={[0, 8, 10]}
+                  />
+                </Gain>
+                <Sampler
+                  sample="samples/snare.wav"
+                  steps={[4, 12]}
+                />
+              </Reverb>
             </Sequencer>
             <Sequencer
               resolution={8}
             >
-              <Sampler
-                sample="samples/hihat.wav"
-                steps={[0,1,2,3,4,5,6,7]}
-              />
+              <Gain amount={0.6}>
+                <Reverb>
+                <Sampler
+                  sample="samples/hihat.wav"
+                  steps={[0,1,2,3,4,5,6,7]}
+                />
+                </Reverb>
+              </Gain>
             </Sequencer>
             <Sequencer
               resolution={16}
@@ -96,6 +106,8 @@ export default class Demo extends Component {
               resolution={16}
               bars={2}
             >
+            <Reverb>
+              <Gain amount={1.5}>
               <Synth
                 type='sine'
                 envelope={{
@@ -113,6 +125,8 @@ export default class Demo extends Component {
                   [24, 7, ['c2', 'd#2', 'g2', 'c3']]
                 ]}
               />
+              </Gain>
+              </Reverb>
             </Sequencer>
           </Analyser>
         </Song>
