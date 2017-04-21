@@ -6,6 +6,8 @@ import {
   Sequencer,
   Sampler,
   Synth,
+  Monosynth,
+  Chorus,
 } from '../src';
 
 import Polysynth from './polysynth';
@@ -58,7 +60,7 @@ export default class Demo extends Component {
             >
               <Sampler
                 sample="samples/kick.wav"
-                steps={[0, 2, 8, 10]}
+                steps={[0, 8, 10]}
               />
               <Sampler
                 sample="samples/snare.wav"
@@ -66,38 +68,49 @@ export default class Demo extends Component {
               />
             </Sequencer>
             <Sequencer
-              resolution={16}
-              bars={2}
+              resolution={8}
             >
-              <Polysynth
-                steps={[
-                  [0, 1, ['c3', 'd#3', 'g3' ]],
-                  [2, 1, ['c4']],
-                  [8, 1, ['c3', 'd#3', 'g3']],
-                  [10, 1, ['c4']],
-                  [12, 1, ['c3', 'd#3', 'g3']],
-                  [14, 1, ['d#4']],
-                  [16, 1, ['f3', 'g#3', 'c4']],
-                  [18, 1, ['f3', 'g#3', 'c4']],
-                  [24, 1, ['f3', 'g#3', 'c4']],
-                  [26, 1, ['f3', 'g#3', 'c4']],
-                  [28, 1, ['f3', 'g#3', 'c4']],
-                  [30, 1, ['f3', 'g#3', 'c4']],
-                ]}
+              <Sampler
+                sample="samples/hihat.wav"
+                steps={[0,1,2,3,4,5,6,7]}
               />
             </Sequencer>
             <Sequencer
               resolution={16}
               bars={2}
             >
+                <Polysynth
+                  steps={[
+                    [0, 1, ['c6', 'g#5']],
+                    [4, 1, ['c6', 'g#5']],
+                    [8, 1, ['c6', 'g#5']],
+                    [12, 1, ['c6', 'g#5']],
+                    [16, 1, ['b5', 'd5']],
+                    [20, 1, ['b5', 'd5']],
+                    [24, 1, ['c6', 'g5']],
+                    [28, 1, ['g5', 'c5']]
+                  ]}
+                />
+            </Sequencer>
+            <Sequencer
+              resolution={16}
+              bars={2}
+            >
               <Synth
-                type="sine"
+                type='sine'
+                envelope={{
+                  attack: 0.01,
+                  sustain: 0.8,
+                  decay: 2,
+                  release: 0.5
+                }}
+                transpose={1} 
+                gain={0.2}
                 steps={[
-                  [0, 8, 'c2'],
-                  [8, 4, 'c2'],
-                  [12, 4, 'd#2'],
-                  [16, 8, 'f2'],
-                  [24, 8, 'f1'],
+                  [0, 7, ['g#2', 'c3', 'd#2']],
+                  [8, 7, ['f2', 'g#2', 'c3']],
+                  [16, 7, ['g2', 'd2', 'b2']],
+                  [24, 7, ['c2', 'd#2', 'g2', 'c3']]
                 ]}
               />
             </Sequencer>
