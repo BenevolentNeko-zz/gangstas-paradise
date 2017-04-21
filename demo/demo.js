@@ -12,18 +12,26 @@ import {
   Reverb,
 } from '../src';
 
+import KaraokeLyric from 'react-karaoke-lyric';
+import { paradise } from './lyrics';
+
 import Polysynth from './polysynth';
 import Visualization from './visualization';
 
 import './index.css';
 
+const tempo = 80;
+let intervalRef = null;
+let percentageIntervalRef = null;
 export default class Demo extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
       playing: true,
-      lightMode: true
+      lightMode: true,
+      currentLine: 0,
+      percentage: 1,
     };
 
     this.handleAudioProcess = this.handleAudioProcess.bind(this);
@@ -34,13 +42,50 @@ export default class Demo extends Component {
     this.visualization.audioProcess(analyser);
   }
   handlePlayToggle() {
+    const playing = !this.state.playing;
     this.setState({
-      playing: !this.state.playing,
+      playing,
     });
+
+    if (playing) {
+      const barInterval = (60000 / 80) * 4;
+      const percentageInterval = barInterval / 5000;
+      intervalRef = setInterval(() => {
+        const currentLine = this.state.currentLine + 1;
+        this.setState({
+          currentLine,
+          percentage: 0
+        });
+      }, barInterval);
+
+      percentageIntervalRef = setInterval(() => {
+        const percentage = this.state.percentage + percentageInterval;
+        this.setState({
+          percentage
+        });
+      }, 16);
+    } else {
+      if (intervalRef) {
+        clearInterval(intervalRef);
+        this.setState({
+          currentLine: 0,
+          percentage: 0
+        });
+      }
+      if (percentageIntervalRef) {
+        clearInterval(percentageIntervalRef);
+        this.setState({
+          currentLine: 0,
+          percentage: 0
+        });
+      }
+    }
   }
+
   toggleLightMode(){
     this.setState({lightMode: !this.state.lightMode});
   }
+
   render() {
     return (
       <div style={this.state.lightMode ? {
@@ -51,9 +96,13 @@ export default class Demo extends Component {
         height: '100%',
         paddingTop: '30px'
       }}>
+      <div style={{ textAlign: 'center' }}>
+        <KaraokeLyric text={paradise[this.state.currentLine]} percentage={this.state.percentage} />
+        { paradise[this.state.currentLine+1] && <KaraokeLyric text={paradise[this.state.currentLine+1]} percentage={0} /> }
+      </div>
         <Song
           playing={this.state.playing}
-          tempo={90}
+          tempo={tempo}
         >
           <Analyser onAudioProcess={this.handleAudioProcess}>
             <Sequencer

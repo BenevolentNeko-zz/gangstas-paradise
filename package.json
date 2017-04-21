@@ -24,6 +24,7 @@
   "dependencies": {
     "audio-contour": "0.0.1",
     "note-parser": "^2.0.0",
+    "react-karaoke-lyric": "^0.2.0",
     "tunajs": "^0.4.5",
     "uuid": "^2.0.2"
   },
